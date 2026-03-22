@@ -26,7 +26,7 @@ public class Service {
                 .peek(System.out::println)
                 .flatMap(student -> student.getBooks().stream())
                 .peek(System.out::println)
-                .sorted(Comparator.comparing(Book::getPages))
+                .sorted(Comparator.comparingInt(Book::getPages))
                 .distinct()
                 .filter(book->book.getYear()>2000)
                 .limit(3)
