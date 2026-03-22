@@ -1,18 +1,20 @@
 package org.example;
 
+import java.util.Objects;
+
 public final class MyFinalClass {
 
     private final Student student;
 
     public MyFinalClass(Student student) {
-        this.student = new Student(student);
+        this.student = Objects.requireNonNull(student).clone();
     }
 
     public Student getStudent() {
-        return new Student(student);
+        return student.clone();
     }
 
-    private static class Student {
+    private static class Student implements Cloneable {
         private String name;
         private int age;
 
@@ -21,9 +23,13 @@ public final class MyFinalClass {
             this.age = age;
         }
 
-        public Student(Student other) {
-            this.name = other.name;
-            this.age = other.age;
+        @Override
+        public Student clone() {
+            try {
+                return (Student) super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError("Clone is not supported", e);
+            }
         }
 
         public String getName() {
